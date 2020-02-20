@@ -1,0 +1,23 @@
+---
+- name: Oracle facts test
+  hosts: localhost
+  vars:
+    oraclehost: centora
+    oracleport: 1521
+    oracleservice: mprod
+    oracleuser: system
+    oraclepassword: oracle_2
+    oracle_env:
+      ORACLE_HOME: /opt/app/oracle/product/19c/client
+      LD_LIBRARY_PATH: /opt/app/oracle/product/19c/client/lib
+  tasks:
+          - name: gather database facts
+            oracle_facts:
+              hostname: "{{ oraclehost }}"
+              port: "{{ oracleport }}"
+              service_name: "{{ oracleservice }}"
+              user: "{{ oracleuser }}"
+              password: "{{ oraclepassword }}"
+            register: dbfacts
+          - debug:
+                  var: dbfacts

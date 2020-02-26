@@ -1,0 +1,22 @@
+---
+- name: Oracle script test
+  hosts: localhost
+  vars:
+    ohost: prod1-scan
+    oservice: mprod
+    ouser: system
+    opw: oracle_2
+    oport: "1521"
+    oscript: "/ora_nfs_prod/ansible-oracle/test.sql"
+  tasks:
+          - name: what the what
+            oracle_sql:
+              host: "{{ ohost }}"
+              sn: "{{ oservice }}"
+              un: "{{ ouser }}"
+              pw: "{{ opw }}"
+              port: "{{ oport }}"
+              script: "{{ oscript }}"
+            register: flem
+          - debug:
+                  var: flem

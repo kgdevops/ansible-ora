@@ -8,9 +8,6 @@
    ouser: bob
    opw: bob
    oport: "1521"
-   oracle_env:
-     ORACLE_HOME: /opt/app/oracle/product/19c/client
-     LD_LIBRARY_PATH: /opt/app/oracle/product/19c/client/lib
 
   tasks:
    - name: Create directory for SQL files

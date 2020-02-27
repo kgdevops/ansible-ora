@@ -1,0 +1,47 @@
+---
+- name: Get Oracle script
+  hosts: localhost
+  vars:
+   sqlscript: bob
+   ohost: bob
+   oservice: bob
+   ouser: bob
+   opw: bob
+   oport: "1521"
+   oracle_env:
+     ORACLE_HOME: /opt/app/oracle/product/19c/client
+     LD_LIBRARY_PATH: /opt/app/oracle/product/19c/client/lib
+
+  tasks:
+   - name: Create directory for SQL files
+     file:
+       path: /tmp/sqlfiles
+       state: directory
+
+   - name: "Git: is it up-to-date?"
+     git:
+       repo: https://github.com/kgdevops/sqlscripts.git
+       dest: /tmp/sqlfiles
+       update: yes
+       version: master
+     register: git
+     ignore_errors: True
+   - debug:
+       var: git
+
+   - name: Execute the SQL script
+     oracle_sql:
+       host: "{{ ohost }}"
+       sn: "{{ oservice }}"
+       un: "{{ ouser }}"
+       pw: "{{ opw }}"
+       port: "{{ oport }}"
+       script: "/tmp/sqlfiles/{{ sqlscript }}"
+     register: sqlresult
+   - debug:
+       var: sqlresult
+
+   - name: Clear SQL files directory
+     file:
+       path: /tmp/sqlfiles
+       state: absent

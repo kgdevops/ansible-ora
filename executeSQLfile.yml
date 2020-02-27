@@ -2,11 +2,6 @@
 - name: Get Oracle script
   hosts: localhost
   vars:
-   sqlscript: bob
-   ohost: bob
-   oservice: bob
-   ouser: bob
-   opw: bob
    oport: "1521"
 
   tasks:

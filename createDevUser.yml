@@ -1,0 +1,40 @@
+---
+- name: Create Oracle User
+  hosts: localhost
+  vars:
+   oport: "1521"
+   odtbsp: "USERS"
+   ottbsp: "TEMP"
+   ostate: "present"
+   ogrant: "DBREAD_REPORTS_ROLE,PLSQL_RESTRICTED_ROLE"
+
+  tasks:
+   - name: Create the user
+     oracle_user:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       schema_password: "{{ oschemapwd }}"
+       default_tablespace: "{{ odtbsp }}"
+       default_temp_tablespace: "{{ ottbsp }}"
+       profile: "{{ oprofile }}"
+       state: "{{ ostate }}"
+     register: sqluser
+   - debug:
+       var: sqluser
+
+   - name: Grant privs to user
+     oracle_grants:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       grants: "{{ ogrant }}"
+     register: sqlgrant
+   - debug:
+       var: sqlgrant

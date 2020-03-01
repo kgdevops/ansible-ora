@@ -1,0 +1,20 @@
+---
+- name: Drop Oracle User
+  hosts: localhost
+  vars:
+   oport: "1521"
+   ostate: "absent"
+
+  tasks:
+   - name: Create the user
+     oracle_user:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       state: "{{ ostate }}"
+     register: sqluser
+   - debug:
+       var: sqluser

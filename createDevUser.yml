@@ -5,6 +5,7 @@
    oport: "1521"
    odtbsp: "USERS"
    ottbsp: "TEMP"
+   oprofile: "DEV_PROFILE"
    ostate: "present"
    ogrant: "DBREAD_REPORTS_ROLE,PLSQL_RESTRICTED_ROLE"
 

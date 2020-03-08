@@ -32,10 +32,6 @@
      register: sqlresult
    - debug:
        var: sqlresult
-       
-   - name: Output SQL result
-      debug:
-        msg: "{{ sqlresult.stdout.split('\n') }}"
 
    - name: Clear SQL files directory
      file:

@@ -31,7 +31,7 @@
        script: "/tmp/sqlfiles/{{ sqlscript }}"
      register: sqlresult
    - debug:
-       var: sqlresult
+       msg: "{{ sqlresult.stdout.split('\n') }}"
 
    - name: Clear SQL files directory
      file:

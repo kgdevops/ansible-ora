@@ -6,7 +6,7 @@
    ostate: "absent"
 
   tasks:
-   - name: Create the user
+   - name: Drop the user
      oracle_user:
        hostname: "{{ ohost }}"
        service_name: "{{ oservice }}"

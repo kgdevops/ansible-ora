@@ -10,7 +10,7 @@
        path: /tmp/sqlfiles
        state: directory
 
-   - name: "Git: is it up-to-date?"
+   - name: "Git: download SQL scripts"
      git:
        repo: https://github.com/kgdevops/sqlscripts.git
        dest: /tmp/sqlfiles

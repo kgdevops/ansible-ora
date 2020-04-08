@@ -153,7 +153,8 @@ def read_config(module, config):
         module.fail_json(msg=msg, changed=False)
     return
 
-#def scripts_from_configfile(config):
+def scripts_from_configfile(module,config):
+
 
 def main():
 
@@ -260,8 +261,12 @@ def main():
             module.fail_json(msg='SQL file seems to be empty')
     else:
         configfile = read_config(module,config)
-        msg = 'Config option chosen'
-        module.exit_json(msg=msg, changed=True)
+        if len(configfile) > 0:
+          msg = 'Config file has stuff in it'
+          module.exit_json(msg=msg, changed=True)
+        else:
+          msg = 'Config file has no stuff in it'
+          module.exit_json(msg=msg, changed=True)
 
     module.exit_json(msg="Unhandled exit", changed=False)
 

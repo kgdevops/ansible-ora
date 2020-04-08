@@ -1,0 +1,39 @@
+---
+- name: Get Oracle script
+  hosts: localhost
+  vars:
+   oport: "1521"
+
+  tasks:
+   - name: Create directory for SQL files
+     file:
+       path: /tmp/sqlfiles
+       state: directory
+
+   - name: "Git: download SQL scripts"
+     git:
+       repo: https://github.com/kgdevops/sqlscripts.git
+       dest: /tmp/sqlfiles
+       update: yes
+       version: master
+     register: git
+     ignore_errors: True
+   - debug:
+       var: git
+
+   - name: Execute the SQL script
+     oracle_sql:
+       host: "{{ ohost }}"
+       sn: "{{ oservice }}"
+       un: "{{ ouser }}"
+       pw: "{{ opw }}"
+       port: "{{ oport }}"
+       config: "/tmp/sqlfiles/{{ config }}"
+     register: sqlresult
+   - debug:
+       var: sqlresult
+
+   - name: Clear SQL files directory
+     file:
+       path: /tmp/sqlfiles
+       state: absent

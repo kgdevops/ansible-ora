@@ -262,11 +262,11 @@ def main():
     else:
         configfile = read_config(module,config)
         if len(configfile) > 0:
-          msg = 'Config file has stuff in it'
-          module.exit_json(msg=msg, changed=True)
+            msg = 'Config file has stuff in it'
+            module.exit_json(msg=msg, changed=True)
         else:
-          msg = 'Config file has no stuff in it'
-          module.exit_json(msg=msg, changed=True)
+            msg = 'Config file has no stuff in it'
+            module.exit_json(msg=msg, changed=True)
 
     module.exit_json(msg="Unhandled exit", changed=False)
 

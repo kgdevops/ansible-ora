@@ -22,7 +22,7 @@
        var: git
 
    - name: Execute the SQL script
-     oracle_sql:
+     oracle_sql_kgl:
        host: "{{ ohost }}"
        sn: "{{ oservice }}"
        un: "{{ ouser }}"

@@ -153,7 +153,7 @@ def read_config(module, config):
         module.fail_json(msg=msg, changed=False)
     return
 
-def scripts_from_configfile(module,config):
+#def scripts_from_configfile(module,config):
 
 
 def main():

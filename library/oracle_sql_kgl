@@ -142,6 +142,18 @@ def clean_sqlfile(sqlfile):
     sqlfile = os.linesep.join([s for s in sqlfile.splitlines() if s])
     return sqlfile
 
+def read_config(module, config):
+    try:
+        f = open(config, 'r')
+        configfile = f.read()
+        f.close()
+        return configfile
+    except IOError as e:
+        msg = 'Couldn\'t open/read file: %s' % (e)
+        module.fail_json(msg=msg, changed=False)
+    return
+
+#def scripts_from_configfile(config):
 
 def main():
 
@@ -247,6 +259,7 @@ def main():
         else:
             module.fail_json(msg='SQL file seems to be empty')
     else:
+        configfile = read_config(module,config)
         msg = 'Config option chosen'
         module.exit_json(msg=msg, changed=True)
 

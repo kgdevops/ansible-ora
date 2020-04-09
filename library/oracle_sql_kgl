@@ -156,6 +156,10 @@ def read_config(module, config):
 def execute_configfile(module,config):
     #open config and parse
     myList = []
+    config = config.strip()
+    config = config.lstrip()
+    config = config.lstrip()
+    
     with open(config,"r") as config_file:
         data = json.load(config_file)
     #

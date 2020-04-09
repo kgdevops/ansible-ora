@@ -156,10 +156,10 @@ def read_config(module, config):
 def execute_configfile(module,config):
     #open config and parse
     myList = []
-    config = clean_sqlfile(config)
+    #config = clean_sqlfile(config)
 
-    with open(config,"r") as config_file:
-        data = json.load(config_file)
+    #with open(config,"r") as config_file:
+    data = json.load(config)
     #
     #start loop based on script list
     for k,v in data['sqldeploy']['scripts'].items():

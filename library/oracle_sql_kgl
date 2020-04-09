@@ -81,7 +81,7 @@ EXAMPLES = '''
     service_name: one.world
     script: /u01/scripts/create-tables-and-insert-default-values.sql
 '''
-import os
+import os,sys,json
 from ansible.module_utils.basic import AnsibleModule
 
 try:
@@ -153,8 +153,44 @@ def read_config(module, config):
         module.fail_json(msg=msg, changed=False)
     return
 
-#def scripts_from_configfile(module,config):
+def execute_configfile(module,config):
+    #open config and parse
+    myList = []
+    with open(config,"r") as config_file:
+        data = json.load(config_file)
+    #
+    #start loop based on script list
+    for k,v in data['sqldeploy']['scripts'].items():
+        lilRec = [v['sequence'],v['database'],v['script']]
+        myList.append(lilRec)
 
+    myList.sort()
+
+    for myRec in myList:
+        service_name = myRec[1]
+        sqlfile = myRec[2]
+        dsn = cx_Oracle.makedsn(host=hostname, port=port, service_name=service_name)
+        connect = dsn
+        conn = cx_Oracle.connect(user, password, dsn)
+        cursor = conn.cursor()
+        sqlfile = read_file(module, script)
+        if len(sqlfile) > 0:
+            sqlfile = clean_sqlfile(sqlfile)           
+            if sqlfile.endswith('/') or ('create or replace') in sqlfile.lower():
+                sqldelim = '/'
+            else:
+                sqldelim = ';'
+            sqlfile = sqlfile.strip(sqldelim)
+            sql = sqlfile.split(sqldelim)            
+            for q in sql:
+                execute_sql(module, cursor, conn, q)
+            #msg = 'Finished running script %s \nContents: \n%s' % (script, sqlfile)
+            #module.exit_json(msg=msg, changed=True)
+        else:
+            module.fail_json(msg='SQL file seems to be empty')
+    #end loop
+    msg = 'Finished running config %s \nContents: \n%s' % (config_file, config)
+    module.exit_json(msg=msg, changed=True)
 
 def main():
 
@@ -262,11 +298,10 @@ def main():
     else:
         configfile = read_config(module,config)
         if len(configfile) > 0:
-            msg = 'Config file has stuff in it'
+            msg = 'Need to build a log file!'
             module.exit_json(msg=msg, changed=True)
         else:
-            msg = 'Config file has no stuff in it'
-            module.exit_json(msg=msg, changed=True)
+            module.exit_json(msg='Config file seems to be empty')
 
     module.exit_json(msg="Unhandled exit", changed=False)
 

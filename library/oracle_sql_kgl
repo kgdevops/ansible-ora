@@ -298,6 +298,7 @@ def main():
     else:
         configfile = read_config(module,config)
         if len(configfile) > 0:
+            execute_configfile(module,configfile)
             msg = 'Need to build a log file!'
             module.exit_json(msg=msg, changed=True)
         else:

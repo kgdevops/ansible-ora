@@ -168,6 +168,8 @@ def execute_configfile(module,config):
 
     myList.sort()
 
+    module.exit_json(msg=myList)
+
     for myRec in myList:
         service_name = myRec[1]
         sqlfile = myRec[2]

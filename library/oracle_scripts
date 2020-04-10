@@ -93,6 +93,25 @@ def clean_sqlfile(sqlfile):
     sqlfile = os.linesep.join([s for s in sqlfile.splitlines() if s])
     return sqlfile
 
+def execute_sql(module, cursor, conn, sql):
+    if 'insert' or 'delete' or 'update' in sql.lower():
+        docommit = True
+    else:
+        docommit = False
+
+    try:
+        # module.exit_json(msg=sql.strip())
+        cursor.execute(sql)
+    except cx_Oracle.DatabaseError as exc:
+        error, = exc.args
+        msg = 'Something went wrong while executing sql - %s sql: %s' % (error.message, sql)
+        module.fail_json(msg=msg, changed=False)
+        return False
+    if docommit:
+        conn.commit()
+    return True
+
+
 def main():
 
     module = AnsibleModule(

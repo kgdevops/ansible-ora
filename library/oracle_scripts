@@ -109,6 +109,7 @@ def execute_sql(module, cursor, conn, sql):
         return False
     if docommit:
         conn.commit()
+    finalMsg = 
     return True
 
 
@@ -139,6 +140,7 @@ def main():
     # Not sure if this is required in python
     #
     myList = []
+    finalMsg = ""
 
     # Since the config file, which is being sent with the full path, should be in
     #   the same GitHub folder as the SQL files specified, get the directory from
@@ -186,12 +188,12 @@ def main():
             sql = sqlfile.split(sqldelim)            
             for q in sql:
                 execute_sql(module, cursor, conn, q)
-            #msg = 'Finished running script %s \nContents: \n%s' % (script, sqlfile)
+                finalMsg = finalMsg+'Finished running script %s \nContents: \n%s' % (script, sqlfile)
             #module.exit_json(msg=msg, changed=True)
         else:
             module.fail_json(msg='SQL file seems to be empty')
     #end loop
-    msg = 'Finished running config %s \nContents: \n%s' % (config, config_file)
+    msg = 'Finished running config %s \nContents: \n%s' % (config, finalMsg)
     module.exit_json(msg=msg, changed=True)
 
     module.exit_json(msg="Unhandled exit", changed=False)

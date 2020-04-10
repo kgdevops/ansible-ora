@@ -1,0 +1,181 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+DOCUMENTATION = '''
+---
+module: oracle_scripts
+short_description: Execute multiple arbitrary sql
+description:
+    - Execute multiple ordered arbitrary sql against Oracle databases
+
+version_added: "1.0.0.0" - Kevin Lidh 04/10/2020
+options:
+    username:
+        description:
+            - The database username to connect to the database
+        required: true
+        default: None
+        aliases: ['un']
+    password:
+        description:
+            - The password to connect to the database
+        required: true
+        default: None
+        aliases: ['pw']
+    hostname:
+        description:
+            - The host of the database(s)
+        required: true
+        default: None
+        aliases: ['host']
+    port:
+        description:
+            - The listener port to connect to the database
+        required: false
+        default: 1521
+    config:
+        description:
+            - The configuration file which contains the scripts you
+              want to execute.
+        required: true
+notes:
+    - cx_Oracle needs to be installed
+    - Oracle client libraries need to be installed along with ORACLE_HOME and LD_LIBRARY_PATH settings.
+requirements: [ "cx_Oracle" ]
+author: Kevin Lidh, kevin.lidh@efirstbank.com
+modified:  
+'''
+
+EXAMPLES = '''
+# Execute arbitrary sql scripts in multiple databases
+- oracle_scripts:
+    username: "{{ user }}"
+    password: "{{ password }}"
+    hostname: "{{ host }}"
+    config: {{ config }}
+'''
+import os,sys,json
+from ansible.module_utils.basic import AnsibleModule
+
+try:
+    import cx_Oracle
+except ImportError:
+    cx_oracle_exists = False
+else:
+    cx_oracle_exists = True
+
+def read_config(module, config):
+    try:
+        f = open(config, 'r')
+        configfile = f.read()
+        f.close()
+        return configfile
+    except IOError as e:
+        msg = 'Couldn\'t open/read file: %s' % (e)
+        module.fail_json(msg=msg, changed=False)
+    return
+
+def read_file(module, script):
+    try:
+        f = open(script, 'r')
+        sqlfile = f.read()
+        f.close()
+        return sqlfile
+    except IOError as e:
+        msg = 'Couldn\'t open/read file: %s' % (e)
+        module.fail_json(msg=msg, changed=False)
+    return
+
+def clean_sqlfile(sqlfile):
+    sqlfile = sqlfile.strip()
+    sqlfile = sqlfile.lstrip()
+    sqlfile = sqlfile.lstrip()
+    sqlfile = os.linesep.join([s for s in sqlfile.splitlines() if s])
+    return sqlfile
+
+def main():
+
+    module = AnsibleModule(
+        argument_spec=dict(
+            user=dict(required=True, aliases=['un', 'username']),
+            password=dict(required=True, no_log=True, aliases=['pw']),
+            hostname=dict(required=True, aliases=['host']),
+            port=dict(required=False, default=1521),
+            config=dict(required=True),
+        )
+    )
+
+    user = module.params["user"]
+    password = module.params["password"]
+    hostname = module.params["hostname"]
+    port = module.params["port"]
+    config = module.params["config"]
+
+    # Make sure cx_oracle is installed
+    #
+    if not cx_oracle_exists:
+        msg = "The cx_Oracle module is required. Also set LD_LIBRARY_PATH & ORACLE_HOME"
+        module.fail_json(msg=msg)
+   
+    # Not sure if this is required in python
+    #
+    myList = []
+
+    # Since the config file, which is being sent with the full path, should be in
+    #   the same GitHub folder as the SQL files specified, get the directory from
+    #   the config parameter
+    #
+    head,tail = os.path.split(config)
+    a=0-len(tail)
+    fullpath=config[:a]
+
+    # Open the config file and load the data
+    #
+    with open(config,"r") as config_file:
+        data = json.load(config_file)
+
+    # Load a list of records containing the sequence, database, and
+    #   script name
+    #
+    for k,v in data['sqldeploy']['scripts'].items():
+        lilRec = [v['sequence'],v['database'],v['script']]
+        myList.append(lilRec)
+
+    # Sort the list by sequence in case the order in the JSON file isn't the
+    #   same as the sequence order
+    # 
+    myList.sort()
+
+    # Loop through the list and execute the SQL against the databases in the
+    #   specified order
+    #
+    for myRec in myList:
+        service_name = myRec[1]
+        script = fullpath+myRec[2]
+        dsn = cx_Oracle.makedsn(host=hostname, port=port, service_name=service_name)
+        connect = dsn
+        conn = cx_Oracle.connect(user, password, dsn)
+        cursor = conn.cursor()
+        sqlfile = read_file(module, script)
+        if len(sqlfile) > 0:
+            sqlfile = clean_sqlfile(sqlfile)           
+            if sqlfile.endswith('/') or ('create or replace') in sqlfile.lower():
+                sqldelim = '/'
+            else:
+                sqldelim = ';'
+            sqlfile = sqlfile.strip(sqldelim)
+            sql = sqlfile.split(sqldelim)            
+            for q in sql:
+                execute_sql(module, cursor, conn, q)
+            #msg = 'Finished running script %s \nContents: \n%s' % (script, sqlfile)
+            #module.exit_json(msg=msg, changed=True)
+        else:
+            module.fail_json(msg='SQL file seems to be empty')
+    #end loop
+    msg = 'Finished running config %s \nContents: \n%s' % (config, config_file)
+    module.exit_json(msg=msg, changed=True)
+
+    module.exit_json(msg="Unhandled exit", changed=False)
+
+if __name__ == '__main__':
+    main()

@@ -172,7 +172,7 @@ def execute_configfile(module,config,hostname,port,user,password):
 
     for myRec in myList:
         service_name = myRec[1]
-        sqlfile = myRec[2]
+        script = myRec[2]
         dsn = cx_Oracle.makedsn(host=hostname, port=port, service_name=service_name)
         connect = dsn
         conn = cx_Oracle.connect(user, password, dsn)

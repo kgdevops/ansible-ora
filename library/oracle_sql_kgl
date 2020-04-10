@@ -300,9 +300,9 @@ def main():
         else:
             module.fail_json(msg='SQL file seems to be empty')
     else:
-        configfile = read_config(module,config,hostname,port)
+        configfile = read_config(module,config)
         if len(configfile) > 0:
-            execute_configfile(module,config)
+            execute_configfile(module,config,hostname,port)
             msg = 'Need to build a log file!'
             module.exit_json(msg=msg, changed=True)
         else:

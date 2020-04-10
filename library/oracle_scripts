@@ -192,7 +192,7 @@ def main():
         else:
             module.fail_json(msg='SQL file seems to be empty')
     #end loop
-    FinalMsg = FinalMsg.replace("\n","\r\n")
+    #FinalMsg = FinalMsg.replace("\n","\r\n")
     msg = 'Finished running config %s \nContents: \n%s' % (config, finalMsg)
     module.exit_json(msg=msg, changed=True)
 

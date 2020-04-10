@@ -22,16 +22,15 @@
        var: git
 
    - name: Execute the SQL script
-     oracle_sql_kgl:
+     oracle_scripts:
        host: "{{ ohost }}"
-       sn: "{{ oservice }}"
        un: "{{ ouser }}"
        pw: "{{ opw }}"
        port: "{{ oport }}"
        config: "/tmp/sqlfiles/{{ config }}"
-     register: sqlresult
+     register: scriptsresult
    - debug:
-       var: sqlresult
+       var: scriptsresult
 
    - name: Clear SQL files directory
      file:

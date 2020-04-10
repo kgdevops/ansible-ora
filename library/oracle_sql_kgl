@@ -153,7 +153,7 @@ def read_config(module, config):
         module.fail_json(msg=msg, changed=False)
     return
 
-def execute_configfile(module,config,hostname,port):
+def execute_configfile(module,config,hostname,port,user,password):
     #open config and parse
     myList = []
     #config = clean_sqlfile(config)
@@ -302,7 +302,7 @@ def main():
     else:
         configfile = read_config(module,config)
         if len(configfile) > 0:
-            execute_configfile(module,config,hostname,port)
+            execute_configfile(module,config,hostname,port,user,password)
             msg = 'Need to build a log file!'
             module.exit_json(msg=msg, changed=True)
         else:

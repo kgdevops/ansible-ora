@@ -188,7 +188,7 @@ def main():
             sql = sqlfile.split(sqldelim)            
             for q in sql:
                 execute_sql(module, cursor, conn, q)
-                finalMsg = finalMsg+'Finished running script %s \nContents: \n%s' % (script, sqlfile)
+            finalMsg = finalMsg+'Finished running script %s \nContents: \n%s' % (script, sqlfile)
             #module.exit_json(msg=msg, changed=True)
         else:
             module.fail_json(msg='SQL file seems to be empty')

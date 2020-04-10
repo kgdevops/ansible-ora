@@ -187,7 +187,7 @@ def main():
             sql = sqlfile.split(sqldelim)            
             for q in sql:
                 execute_sql(module, cursor, conn, q)
-            finalMsg = finalMsg+'Finished running script %s against %s\nContents: \n%s' % (script, service_name, sqlfile)
+            finalMsg = finalMsg+'Finished running script %s against %s on %s\nContents: \n%s' % (script, service_name, hostname, sqlfile)
             finalMsg = finalMsg+'^^^^^^^^^ End of SQL script ^^^^^^^^^^^'
             #module.exit_json(msg=msg, changed=True)
         else:

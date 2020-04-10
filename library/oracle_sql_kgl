@@ -168,7 +168,7 @@ def execute_configfile(module,config):
 
     myList.sort()
 
-    module.exit_json(msg=myList)
+    module.exit_json(msg="Made it here!")
 
     for myRec in myList:
         service_name = myRec[1]

@@ -30,7 +30,7 @@
        config: "/tmp/sqlfiles/{{ config }}"
      register: scriptsresult
    - debug:
-       var: "{{ scriptresult.stdout.split('\n') }}"
+       var: scriptresult.stdout.split('\n')
 
    - name: Clear SQL files directory
      file:

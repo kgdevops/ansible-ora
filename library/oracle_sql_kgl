@@ -157,11 +157,12 @@ def execute_configfile(module,config):
     #open config and parse
     myList = []
     #config = clean_sqlfile(config)
-    module.exit_json(msg="Made it here!")
 
     #with open(config,"r") as config_file:
     data = json.load(config)
     #
+    module.exit_json(msg="Made it here!")
+
     #start loop based on script list
     for k,v in data['sqldeploy']['scripts'].items():
         lilRec = [v['sequence'],v['database'],v['script']]

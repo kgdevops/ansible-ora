@@ -153,7 +153,7 @@ def read_config(module, config):
         module.fail_json(msg=msg, changed=False)
     return
 
-def execute_configfile(module,config):
+def execute_configfile(module,config,hostname,port):
     #open config and parse
     myList = []
     #config = clean_sqlfile(config)
@@ -300,7 +300,7 @@ def main():
         else:
             module.fail_json(msg='SQL file seems to be empty')
     else:
-        configfile = read_config(module,config)
+        configfile = read_config(module,config,hostname,port)
         if len(configfile) > 0:
             execute_configfile(module,config)
             msg = 'Need to build a log file!'

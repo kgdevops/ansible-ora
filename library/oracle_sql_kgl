@@ -156,7 +156,11 @@ def read_config(module, config):
 def execute_configfile(module,config,hostname,port,user,password):
     #open config and parse
     myList = []
-    #config = clean_sqlfile(config)
+
+    #Get path from config for SQL files
+    head,tail = os.path.split(config)
+    a=0-len(tail)
+    fullpath=config[:a]
 
     with open(config,"r") as config_file:
         data = json.load(config_file)
@@ -172,7 +176,7 @@ def execute_configfile(module,config,hostname,port,user,password):
 
     for myRec in myList:
         service_name = myRec[1]
-        script = myRec[2]
+        script = fullpath+myRec[2]
         dsn = cx_Oracle.makedsn(host=hostname, port=port, service_name=service_name)
         connect = dsn
         conn = cx_Oracle.connect(user, password, dsn)

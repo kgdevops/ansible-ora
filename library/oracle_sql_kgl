@@ -157,6 +157,7 @@ def execute_configfile(module,config):
     #open config and parse
     myList = []
     #config = clean_sqlfile(config)
+    module.exit_json(msg="Made it here!")
 
     #with open(config,"r") as config_file:
     data = json.load(config)
@@ -167,8 +168,6 @@ def execute_configfile(module,config):
         myList.append(lilRec)
 
     myList.sort()
-
-    module.exit_json(msg="Made it here!")
 
     for myRec in myList:
         service_name = myRec[1]

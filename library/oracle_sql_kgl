@@ -158,8 +158,8 @@ def execute_configfile(module,config):
     myList = []
     #config = clean_sqlfile(config)
 
-    #with open(config,"r") as config_file:
-    data = json.load(config)
+    with open(config,"r") as config_file:
+        data = json.load(config_file)
     #
     module.exit_json(msg="Made it here!")
 
@@ -302,7 +302,7 @@ def main():
     else:
         configfile = read_config(module,config)
         if len(configfile) > 0:
-            execute_configfile(module,configfile)
+            execute_configfile(module,config)
             msg = 'Need to build a log file!'
             module.exit_json(msg=msg, changed=True)
         else:

@@ -32,6 +32,12 @@
    - debug:
        var: scriptsresult
 
+   - name: Package up the work files
+     archive:
+       path: /tmp/sqlfiles
+       dest: /tmp/sqlfiles.zip
+       format: zip
+
    - name: Clear SQL files directory
      file:
        path: /tmp/sqlfiles

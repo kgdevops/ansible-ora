@@ -35,7 +35,7 @@
    - name: Package up the work files
      archive:
        path: /tmp/sqlfiles
-       dest: /tmp/sqlfiles.zip
+       dest: /tmp/{{ snchange }}.zip
        format: zip
 
    - name: Clear SQL files directory

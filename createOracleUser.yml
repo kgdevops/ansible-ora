@@ -1,0 +1,51 @@
+---
+- name: Create Oracle User
+  hosts: localhost
+  vars:
+   oport: "1521"
+   odtbsp: "USERS"
+   ottbsp: "TEMP"
+   oprofile: "DEV_PROFILE"
+   ostate: "present"
+   ogrant: "DBREAD_REPORTS_ROLE,PLSQL_RESTRICTED_ROLE"
+   oracle_env:
+     ORACLE_HOME: /opt/app/oracle/instantclient_19_6
+     LD_LIBRARY_PATH: /opt/app/oracle/instantclient_19_6
+
+  tasks:
+   - name: Display environment
+     shell: env; whoami
+
+   - name: Create the user
+     oracle_user:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       schema_password: "{{ oschemapwd }}"
+       default_tablespace: "{{ odtbsp }}"
+       default_temp_tablespace: "{{ ottbsp }}"
+       profile: "{{ oprofile }}"
+       state: "{{ ostate }}"
+     environment:
+       - "{{ oracle_env }}"
+     register: sqluser
+   - debug:
+       var: sqluser
+
+   - name: Grant privs to user
+     oracle_grants:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       grants: "{{ ogrant }}"
+     environment:
+       - "{{ oracle_env}}"
+     register: sqlgrant
+   - debug:
+       var: sqlgrant

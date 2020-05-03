@@ -9,8 +9,8 @@
    ostate: "present"
    ogrant: "DBREAD_REPORTS_ROLE,PLSQL_RESTRICTED_ROLE"
    oracle_env:
-     ORACLE_HOME: /opt/app/oracle/instantclient_19_6
-     LD_LIBRARY_PATH: /opt/app/oracle/instantclient_19_6
+     ORACLE_HOME: "/opt/app/oracle/instantclient_19_6"
+     LD_LIBRARY_PATH: "/opt/app/oracle/instantclient_19_6"
 
   tasks:
    - name: Display environment

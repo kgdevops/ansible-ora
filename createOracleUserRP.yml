@@ -23,7 +23,6 @@
        default_tablespace: "{{ odtbsp }}"
        default_temp_tablespace: "{{ ottbsp }}"
        profile: "{{ oprofile }}"
-       state: "{{ ostate }}"
      register: sqluser
    - debug:
        var: sqluser
@@ -36,7 +35,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
-       state: "present"
+       grants_mode: "append"
        grants: "READ_NON_SENSITIVE_ROLE"
      register: sqlgrant
    - debug:
@@ -50,7 +49,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
-       state: "present"
+       grants_mode: "append"
        grants: "READ_PII_ROLE"
      when: pii == "YES"
      register: piigrant

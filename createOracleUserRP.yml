@@ -1,0 +1,70 @@
+---
+- name: Create Oracle User
+  hosts: localhost
+  vars:
+   oport: "1521"
+   odtbsp: "USERS"
+   ottbsp: "TEMP"
+   oprofile: "DEV_PROFILE"
+   ostate: "present"
+   pii: "NO"
+   pci: "NO"
+
+  tasks:
+   - name: Create the user
+     oracle_user:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       schema_password: "{{ oschemapwd }}"
+       default_tablespace: "{{ odtbsp }}"
+       default_temp_tablespace: "{{ ottbsp }}"
+       profile: "{{ oprofile }}"
+       state: "{{ ostate }}"
+     register: sqluser
+   - debug:
+       var: sqluser
+
+   - name: Grant basic privs to user
+     oracle_grants:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       grants: "READ_NON_SENSITIVE_ROLE"
+     register: sqlgrant
+   - debug:
+       var: sqlgrant
+
+   - name: Grant pii privs to user
+     oracle_grants:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       grants: "READ_PII_ROLE"
+     when: pii == "YES"
+     register: piigrant
+   - debug:
+       var: piigrant
+
+   - name: Grant pci privs to user
+     oracle_grants:
+       hostname: "{{ ohost }}"
+       service_name: "{{ oservice }}"
+       user: "{{ ouser }}"
+       password: "{{ opw }}"
+       port: "{{ oport }}"
+       schema: "{{ oschema }}"
+       grants: "READ_PCI_ROLE"
+     when: pci == "YES"
+     register: pcigrant
+   - debug:
+       var: pcigrant

@@ -36,6 +36,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
+       state: "present"
        grants: "READ_NON_SENSITIVE_ROLE"
      register: sqlgrant
    - debug:
@@ -49,6 +50,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
+       state: "present"
        grants: "READ_PII_ROLE"
      when: pii == "YES"
      register: piigrant
@@ -63,6 +65,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
+       state: "present"
        grants: "READ_PCI_ROLE"
      when: pci == "YES"
      register: pcigrant

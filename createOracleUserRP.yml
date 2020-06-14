@@ -64,7 +64,7 @@
        password: "{{ opw }}"
        port: "{{ oport }}"
        schema: "{{ oschema }}"
-       state: "present"
+       grants_mode: "append"
        grants: "READ_PCI_ROLE"
      when: pci == "YES"
      register: pcigrant

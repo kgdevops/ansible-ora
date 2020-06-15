@@ -22,7 +22,7 @@
   tasks:
    - name: Include vars of common_profiles into the 'profile' variable
      include_vars:
-       file: common_properties.yml
+       file: common_profiles.yml
        name: profiles
 
    - name: Create the user

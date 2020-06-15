@@ -26,6 +26,9 @@
        name: profiles
 
    - name: Create the user
+    include_vars:
+       file: common_profiles.yml
+       name: profiles
      oracle_user:
        hostname: "{{ ohost }}"
        service_name: "{{ oservice }}"

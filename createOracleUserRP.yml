@@ -5,30 +5,21 @@
    oport: "1521"
    odtbsp: "USERS"
    ottbsp: "TEMP"
-#   oprofile: "DEV_PROFILE"
-#   profiles:
-#     BusinessUser:
-#       user_profile: BUSINESS_PROFILE
-#     Developer:
-#       user_profile: DEV_PROFILE
-#     DataArchitect:
-#       user_profile: DA_PROFILE
-#     DBA:
-#       user_profile: DBA_PROFILE
+   profiles:
+     BusinessUser:
+       user_profile: BUSINESS_PROFILE
+     Developer:
+       user_profile: DEV_PROFILE
+     DataArchitect:
+       user_profile: DA_PROFILE
+     DBA:
+       user_profile: DBA_PROFILE
    ostate: "present"
    pii: "NO"
    pci: "NO"
 
   tasks:
-   - name: Include vars of common_profiles into the 'profile' variable
-     include_vars:
-       file: common_profiles.yml
-       name: profiles
-
    - name: Create the user
-    include_vars:
-       file: common_profiles.yml
-       name: profiles
      oracle_user:
        hostname: "{{ ohost }}"
        service_name: "{{ oservice }}"

@@ -1,9 +1,6 @@
 ---
 - name: Create Oracle User
   hosts: localhost
-  include_vars:
-   file: common_properties.yml
-   name: profiles
   vars:
    oport: "1521"
    odtbsp: "USERS"
@@ -23,6 +20,11 @@
    pci: "NO"
 
   tasks:
+   - name: Include vars of common_profiles into the 'profile' variable
+     include_vars:
+       file: common_properties.yml
+       name: profiles
+
    - name: Create the user
      oracle_user:
        hostname: "{{ ohost }}"

@@ -5,7 +5,16 @@
    oport: "1521"
    odtbsp: "USERS"
    ottbsp: "TEMP"
-   oprofile: "DEV_PROFILE"
+#   oprofile: "DEV_PROFILE"
+   profiles:
+     BusinessUser:
+       oprofile: BUSINESS_PROFILE
+     Developer:
+       oprofile: DEV_PROFILE
+     DataArchitect:
+       oprofile: DA_PROFILE
+     DBA:
+       oprofile: DBA_PROFILE
    ostate: "present"
    pii: "NO"
    pci: "NO"

@@ -8,13 +8,13 @@
 #   oprofile: "DEV_PROFILE"
    profiles:
      BusinessUser:
-       oprofile: BUSINESS_PROFILE
+       user_profile: BUSINESS_PROFILE
      Developer:
-       oprofile: DEV_PROFILE
+       user_profile: DEV_PROFILE
      DataArchitect:
-       oprofile: DA_PROFILE
+       user_profile: DA_PROFILE
      DBA:
-       oprofile: DBA_PROFILE
+       user_profile: DBA_PROFILE
    ostate: "present"
    pii: "NO"
    pci: "NO"
@@ -31,7 +31,7 @@
        schema_password: "{{ oschemapwd }}"
        default_tablespace: "{{ odtbsp }}"
        default_temp_tablespace: "{{ ottbsp }}"
-       profile: "{{ oprofile }}"
+       profile: "{{ profiles[oprofile]['user_profile'] }}"
      register: sqluser
    - debug:
        var: sqluser

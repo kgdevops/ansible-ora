@@ -1,6 +1,5 @@
 ---
-- name: install common Oracle profiles
-# vars:
+
    profiles:
      BusinessUser:
        user_profile: BUSINESS_PROFILE

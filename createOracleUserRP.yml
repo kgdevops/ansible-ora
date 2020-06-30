@@ -17,8 +17,18 @@
    ostate: "present"
    pii: "NO"
    pci: "NO"
+   new_passwd: "{{ lookup('password','/dev/null length=16') }}"
 
   tasks:
+   - name: Create the new Oracle user password
+     set_fact:
+       oschemapwd: "{{ new_passwd }}"
+     no_log: true
+
+   - name: Debug block
+     debug:
+       msg: "DEBUG: oschemapwd = [{{ oschemapwd }}]"
+
    - name: Create the user
      oracle_user:
        hostname: "{{ ohost }}"

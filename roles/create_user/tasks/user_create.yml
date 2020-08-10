@@ -11,75 +11,75 @@
     debug:
       msg: "DEBUG: oracle_new_user_passwd = [{{ oracle_new_user_passwd }}]"
 
-   - name: Create the user
-     oracle_user:
-       hostname: "{{ oracle_host }}"
-       service_name: "{{ oracle_service }}"
-       user: "{{ oracle_user }}"
-       password: "{{ oracle_user_passwd }}"
-       port: "{{ oracle_port }}"
-       schema: "{{ oracle_new_user_name }}"
-       schema_password: "{{ oracle_new_user_password }}"
-       state: "{{ oracle_account_state }}"
-       default_tablespace: "{{ oracle_default_tablespace }}"
-       default_temp_tablespace: "{{ oracle_temp_tablespace }}"
-       profile: "{{ profiles[oracle_profile]['user_profile'] }}"
-       grants: "{{ profiles[oracle_profile]['initial_grants'] }}"
-     register: sqluser
+  - name: Create the user
+    oracle_user:
+      hostname: "{{ oracle_host }}"
+      service_name: "{{ oracle_service }}"
+      user: "{{ oracle_user }}"
+      password: "{{ oracle_user_passwd }}"
+      port: "{{ oracle_port }}"
+      schema: "{{ oracle_new_user_name }}"
+      schema_password: "{{ oracle_new_user_password }}"
+      state: "{{ oracle_account_state }}"
+      default_tablespace: "{{ oracle_default_tablespace }}"
+      default_temp_tablespace: "{{ oracle_temp_tablespace }}"
+      profile: "{{ profiles[oracle_profile]['user_profile'] }}"
+      grants: "{{ profiles[oracle_profile]['initial_grants'] }}"
+    register: sqluser
 
-   - debug:
-       var: sqluser
-       verbosity: 0
+  - debug:
+      var: sqluser
+      verbosity: 0
 
-   - name: Grant basic privs to user
-     oracle_grants:
-       hostname: "{{ oracle_host }}"
-       service_name: "{{ oracle_service }}"
-       user: "{{ oracle_user }}"
-       password: "{{ oracle_user_passwd }}"
-       port: "{{ oracle_port }}"
-       schema: "{{ oracle_new_user_name }}"
-       grants_mode: "append"
-       grants: "READ_NON_SENSITIVE_ROLE"
-     register: sqlgrant
+  - name: Grant basic privs to user
+    oracle_grants:
+      hostname: "{{ oracle_host }}"
+      service_name: "{{ oracle_service }}"
+      user: "{{ oracle_user }}"
+      password: "{{ oracle_user_passwd }}"
+      port: "{{ oracle_port }}"
+      schema: "{{ oracle_new_user_name }}"
+      grants_mode: "append"
+      grants: "READ_NON_SENSITIVE_ROLE"
+    register: sqlgrant
 
-   - debug:
-       var: sqlgrant
-       verbosity: 0
+  - debug:
+      var: sqlgrant
+      verbosity: 0
 
-   - name: Grant pii privs to user
-     oracle_grants:
-       hostname: "{{ oracle_host }}"
-       service_name: "{{ oracle_service }}"
-       user: "{{ oracle_user }}"
-       password: "{{ oracle_user_passwd }}"
-       port: "{{ oracle_port }}"
-       schema: "{{ oracle_new_user_name }}"
-       grants_mode: "append"
-       grants: "READ_PII_ROLE"
-     when: oracle_pii == "YES"
-     register: piigrant
+  - name: Grant pii privs to user
+    oracle_grants:
+      hostname: "{{ oracle_host }}"
+      service_name: "{{ oracle_service }}"
+      user: "{{ oracle_user }}"
+      password: "{{ oracle_user_passwd }}"
+      port: "{{ oracle_port }}"
+      schema: "{{ oracle_new_user_name }}"
+      grants_mode: "append"
+      grants: "READ_PII_ROLE"
+    when: oracle_pii == "YES"
+    register: piigrant
 
-   - debug:
-       var: piigrant
-       verbosity: 0
+  - debug:
+      var: piigrant
+      verbosity: 0
 
-   - name: Grant pci privs to user
-     oracle_grants:
-       hostname: "{{ oracle_host }}"
-       service_name: "{{ oracle_service }}"
-       user: "{{ oracle_user }}"
-       password: "{{ oracle_user_passwd }}"
-       port: "{{ oracle_port }}"
-       schema: "{{ oracle_new_user_name }}"
-       grants_mode: "append"
-       grants: "READ_PCI_ROLE"
-     when: oracle_pci == "YES"
-     register: pcigrant
+  - name: Grant pci privs to user
+    oracle_grants:
+      hostname: "{{ oracle_host }}"
+      service_name: "{{ oracle_service }}"
+      user: "{{ oracle_user }}"
+      password: "{{ oracle_user_passwd }}"
+      port: "{{ oracle_port }}"
+      schema: "{{ oracle_new_user_name }}"
+      grants_mode: "append"
+      grants: "READ_PCI_ROLE"
+    when: oracle_pci == "YES"
+    register: pcigrant
 
-   - debug:
-       var: pcigrant
-       verbosity: 0
+  - debug:
+      var: pcigrant
+      verbosity: 0
   tags: create_user
   rescue:
   - fail:

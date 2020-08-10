@@ -1,0 +1,26 @@
+---
+# File: create_user.yml
+
+# This playbook will create an Oracle user
+
+# Vars passed from template/tower-cli call
+# env: dev|prod
+# oracle_service: tprod
+# oracle_user: (user who will create the new Oracle account)
+# oracle_user_passwd:
+# oracle_new_user_name: (account to be created)
+# oracle_new_user_passwd:
+# oracle_pii: YES | NO
+# oracle_pci: YES | NO
+# oracle_profile: BusinessUser | Developer | DataArchitect
+# oracle_new_user_email: <user>@spectre.com
+
+- gather_facts: no
+  hosts: localhost
+  become: no
+
+  vars_files:
+    - "group_vars/{{ env }}/oracle_vars.yml"
+
+roles:
+- create_user

@@ -1,0 +1,73 @@
+---
+# File: roles/create_user/tasks/input_verification.yml
+
+- block:
+  - name: Validate env is valid
+    assert:
+      that:
+        - env in environments
+      fail_msg: "The env was not specified or is incorrect."
+      success_msg: "env = [{{ env }}]."
+
+  - name: Validate oracle_service is present
+    assert:
+      that:
+        - oracle_service is defined
+        - oracle_service is not none
+        - oracle_service != ""
+      fail_msg: "The oracle_service parameter not passed."
+      success_msg: "oracle_service = [{{ oracle_service }}]."
+
+  - name: Validate oracle_user is present
+    assert:
+      that:
+        - oracle_user is defined
+        - oracle_user is not none
+        - oracle_user != ""
+      fail_msg: "The oracle_user parameter not passed"
+      success_msg: "oracle_user = [{{ oracle_user }}]."
+
+  - name: Validate oracle_user_passwd is present
+    assert:
+      that:
+        - oracle_user_passwd is defined
+        - oracle_user_passwd is not none
+        - oracle_user_passwd != ""
+      fail_msg: "The oracle_user_passwd parameter not passed"
+      success_msg: "oracle_user_passwd was provided."
+
+  - name: Validate oracle_port is present
+    assert:
+      that:
+        - oracle_port is defined
+        - oracle_port is not none
+        - oracle_port != ""
+      fail_msg: "The oracle_port parameter not passed"
+      success_msg: "oracle_port = [{{ oracle_port }}]."
+
+  - name: Validate oracle_new_user_name is present
+    assert:
+      that:
+        - oracle_new_user_name is defined
+        - oracle_new_user_name is not none
+        - oracle_new_user_name != ""
+      fail_msg: "The oracle_new_user_name parameter not passed"
+      success_msg: "oracle_new_user_name = [{{ oracle_new_user_name }}]."
+
+  - name: Validate oracle_profile is present
+    assert:
+      that:
+        - oracle_profile is defined
+        - oracle_profile is not none
+        - oracle_profile != ""
+      fail_msg: "The oracle_profile parameter not passed"
+      success_msg: "oracle_profile = [{{ oracle_profile }}]."
+
+  - name: Validate oracle_new_user_email is present
+    assert:
+      that:
+        - oracle_new_user_email is defined
+        - oracle_new_user_email is not none
+        - oracle_new_user_email != ""
+      fail_msg: "The oracle_new_user_email parameter not passed"
+      success_msg: "oracle_new_user_email = [{{ oracle_new_user_email }}]."

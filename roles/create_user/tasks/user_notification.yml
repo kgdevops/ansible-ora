@@ -1,0 +1,19 @@
+---
+# File: roles/create_user/tasks/user_notification.yml
+# User notification for the create_user role
+
+- block:
+  - name: Communicate account creation and password via e-mail
+    mail:
+      host: "{{ mail_host }}"
+      from: "{{ mail_from }}"
+      to: "{{ oracle_new_user_email }}"
+      subject: {{ oracle_new_user_name }} has been created"
+      body: "{{ oracle_new_user_name }} has been created in the {{ oracle_service }} database \
+             on {{ oracle_host }} ({{  env }}) with the password {{ oracle_new_user_passwd }} \
+             without the quotes.  You will be prompted to change the password when \
+             you first log into the database."
+  tags: notify_user
+  rescue:
+  - fail:
+      msg: "{{ ansible_failed_task }} failed with error {{ ansible_failed_result }}"

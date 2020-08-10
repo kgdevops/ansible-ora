@@ -1,0 +1,11 @@
+---
+# File: roles/create_user/tasks/main.yml
+
+- import_tasks: input_verficiation.yml
+  tags: input_verification
+
+- import_tasks: user_create.yml
+  tags: user_create
+
+#- import_tasks: user_notification.yml
+#  tags: user_notification

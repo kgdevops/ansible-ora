@@ -1,0 +1,5 @@
+---
+  # File: group_vars/dev/oracle_vars.yml
+
+  oracle_host: 'ocentora'
+  

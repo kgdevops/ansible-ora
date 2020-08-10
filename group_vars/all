@@ -1,0 +1,39 @@
+---
+# File: group_vars/all
+# This file contains variables that will be visible to all roles
+
+environments: [prod,dev]
+
+oracle_port: "1521"
+oracle_default_tablespace: "USERS"
+oracle_temp_tablespace: "TEMP"
+profiles:
+  BusinessUser:
+    user_profile: BUSINESS_PROFILE
+    initial_grants: BUSINESS_ROLE
+  Developer:
+    user_profile: DEV_PROFILE
+    initial_grants:  DEV_ROLE
+  DataArchitect:
+    user_profile: DA_PROFILE
+    initial_grants: DA_ROLE
+  DBA:
+    user_profile: DBA_PROFILE
+    initial_grants: DBA_ROLE
+oracle_account_state: "expired"
+oracle_pii: "NO"
+oracle_pci: "NO"
+oracle_new_user_passwd: ""
+oracle_new_user_email: ""
+new_passwd: "{{ lookup('password','/dev/null length=14 chars=ascii_letters') }}{{ lookup('password','/dev/null length=1 chars=digits') }}{{ lookup('password','/dev/null length=1 chars=punctuation') }}
+
+mail_from: "OracleAutomation@spectre.com"
+mail_host: "mail.spectre.com"
+mail_domain: "spectre.com"
+
+sn_username:
+sn_passwd:
+sn_instance: "firstbank"
+sn_state: "present"
+sn_chg_number:
+sn_work_notes: ""

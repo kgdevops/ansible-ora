@@ -1,0 +1,5 @@
+---
+  # File: group_vars/prod/oracle_vars.yml
+
+  oracle_host: 'prod1-scan'
+  

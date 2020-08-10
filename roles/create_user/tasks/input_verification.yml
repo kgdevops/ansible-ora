@@ -69,5 +69,6 @@
         - oracle_new_user_email is defined
         - oracle_new_user_email is not none
         - oracle_new_user_email != ""
+        - mail_domain in oracle_new_user_email
       fail_msg: "The oracle_new_user_email parameter not passed"
       success_msg: "oracle_new_user_email = [{{ oracle_new_user_email }}]."

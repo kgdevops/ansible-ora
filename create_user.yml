@@ -22,5 +22,5 @@
   vars_files:
     - "group_vars/{{ env }}/oracle_vars.yml"
 
-roles:
-- create_user
+  roles:
+  - create_user

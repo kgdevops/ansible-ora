@@ -1,7 +1,7 @@
 ---
 # File: roles/create_user/tasks/main.yml
 
-- import_tasks: input_verficiation.yml
+- import_tasks: input_verfication.yml
   tags: input_verification
 
 - import_tasks: user_create.yml

@@ -19,7 +19,7 @@
       password: "{{ oracle_user_passwd }}"
       port: "{{ oracle_port }}"
       schema: "{{ oracle_new_user_name }}"
-      schema_password: "{{ oracle_new_user_password }}"
+      schema_password: "{{ oracle_new_user_passwd }}"
       state: "{{ oracle_account_state }}"
       default_tablespace: "{{ oracle_default_tablespace }}"
       default_temp_tablespace: "{{ oracle_temp_tablespace }}"

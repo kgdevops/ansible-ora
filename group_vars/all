@@ -25,7 +25,7 @@ oracle_pii: "NO"
 oracle_pci: "NO"
 oracle_new_user_passwd: ""
 oracle_new_user_email: ""
-new_passwd: "{{ lookup('password','/dev/null length=14 chars=ascii_letters') }}{{ lookup('password','/dev/null length=1 chars=digits') }}{{ lookup('password','/dev/null length=1 chars=punctuation') }}
+new_passwd: "{{ lookup('password','/dev/null length=14 chars=ascii_letters') }}{{ lookup('password','/dev/null length=1 chars=digits') }}{{ lookup('password','/dev/null length=1 chars=punctuation') }}"
 
 mail_from: "OracleAutomation@spectre.com"
 mail_host: "mail.spectre.com"
